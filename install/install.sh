@@ -86,41 +86,6 @@ echo
 echo
 
 
-# Set required access privileges to pidp11 simulator
-# =============================================================================
-
-while true; do
-    echo
-    read -p "Set required access privileges to pidp11 simulator? " yn
-    case $yn in
-        [Yy]* )
-            # make sure that the directory does not have root ownership
-            # (in case the user did a simple git clone instead of 
-            #  sudo -u pi git clone...)
-            myusername=$(whoami)
-            mygroup=$(id -g -n)
-            sudo chown -R $myusername:$mygroup /opt/pidp11
-            # make sure pidp11 simulator has the right privileges
-            # to access GPIO with root privileges:
-            sudo chmod +s /opt/pidp11/src/11_pidp_server/scanswitch/scansw
-            sudo chmod +s /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd
-            # to run a RT thread:
-            sudo setcap cap_sys_nice+ep /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd
-	    echo Done.
-	    break
-            ;;
-        [Nn]* ) 
-            echo Skipped the setting of access privileges.
-			echo To do this manually later, give the following commands:
-            echo "    sudo chmod +s /opt/pidp11/src/11_pidp_server/scanswitch/scansw"
-            echo "    sudo chmod +s /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd"
-            echo "    sudo setcap cap_sys_nice+ep /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd"
-	    break
-            ;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
 # Install required dependencies
 # =============================================================================
 while true; do
@@ -230,6 +195,42 @@ while true; do
             break
 	    ;;
         * ) echo "Please answer Y, C, or S.";;
+    esac
+done
+
+
+# Set required access privileges to pidp11 simulator
+# =============================================================================
+
+while true; do
+    echo
+    read -p "Set required access privileges to pidp11 simulator? " yn
+    case $yn in
+        [Yy]* )
+            # make sure that the directory does not have root ownership
+            # (in case the user did a simple git clone instead of 
+            #  sudo -u pi git clone...)
+            myusername=$(whoami)
+            mygroup=$(id -g -n)
+            sudo chown -R $myusername:$mygroup /opt/pidp11
+            # make sure pidp11 simulator has the right privileges
+            # to access GPIO with root privileges:
+            sudo chmod +s /opt/pidp11/src/11_pidp_server/scanswitch/scansw
+            sudo chmod +s /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd
+            # to run a RT thread:
+            sudo setcap cap_sys_nice+ep /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd
+	    echo Done.
+	    break
+            ;;
+        [Nn]* ) 
+            echo Skipped the setting of access privileges.
+			echo To do this manually later, give the following commands:
+            echo "    sudo chmod +s /opt/pidp11/src/11_pidp_server/scanswitch/scansw"
+            echo "    sudo chmod +s /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd"
+            echo "    sudo setcap cap_sys_nice+ep /opt/pidp11/src/11_pidp_server/pidp11/bin-rpi/pidp1170_blinkenlightd"
+	    break
+            ;;
+        * ) echo "Please answer yes or no.";;
     esac
 done
 
