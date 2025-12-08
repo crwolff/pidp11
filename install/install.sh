@@ -340,6 +340,7 @@ while true; do
     read -p "Add VT-52 desktop icon and desktop settings? " prxn
     case $prxn in
         [Yy]* ) 
+            mkdir -p $HOME/Desktop
             cp /opt/pidp11/install/vt52.desktop $HOME/Desktop/
             cp /opt/pidp11/install/vt52fullscreen.desktop $HOME/Desktop/
             cp /opt/pidp11/install/tty.desktop $HOME/Desktop/
