@@ -270,8 +270,8 @@ while true; do
                 #sudo systemctl status rpcbind
                 echo
                 echo
-                echo "Autostart the PDP-11 using the GUI(Y) or .profile (H)?"
-                    read -p "-- Y recommended, H is for headless Pis without GUI:" yhn
+                echo "Autostart the PDP-11 using the GUI(Y), .profile (H), or service (S)?"
+                    read -p "-- Y recommended, H is for headless Pis without GUI, S to start on boot:" yhn
                 case $yhn in
                       [Yy]* ) 
                         mkdir -p ~/.config/autostart
@@ -280,6 +280,30 @@ while true; do
 			echo Autostart via .desktop file for GUI setup
                         break
 			;;
+                      [Ss]* )
+                        myusername=$(whoami)
+                        mygroup=$(id -g -n)
+                        sudo tee /etc/systemd/system/pdp11startup.service > /dev/null << __EOF__
+[Unit]
+Description=PiDP-11 Startup Service
+ConditionPathExists=/opt/pidp11/bin/pdp11control.sh
+After=network.target
+
+[Service]
+Type=forking
+User=$myusername
+Group=$mygroup
+
+WorkingDirectory=/opt/pidp11
+ExecStart=/opt/pidp11/bin/pdp11control.sh start
+ExecStop=/opt/pidp11/bin/pdp11control.sh stop
+
+[Install]
+WantedBy=multi-user.target
+__EOF__
+                        sudo systemctl daemon-reload
+                        sudo systemctl enable pdp11startup.service
+                        ;;
                       [NnHh]* ) 
                         # add pdp11 to the end of pi's .profile to let a new login 
                         # grab the terminal automatically
