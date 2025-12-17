@@ -374,6 +374,7 @@ while true; do
             cp /opt/pidp11/install/tty.desktop $HOME/Desktop/
             cp /opt/pidp11/install/tek.desktop $HOME/Desktop/
             cp /opt/pidp11/install/pdp11control.desktop $HOME/Desktop/
+            cp /opt/pidp11/install/pdp11.desktop $HOME/Desktop/
 
             # wallpaper
             echo $XDG_RUNTIME_DIR
