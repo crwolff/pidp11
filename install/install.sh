@@ -375,19 +375,6 @@ while true; do
             cp /opt/pidp11/install/tek.desktop $HOME/Desktop/
             cp /opt/pidp11/install/pdp11control.desktop $HOME/Desktop/
 
-            #make pcmanf run on double click, change its config file
-            config_file="$HOME/.config/libfm/libfm.conf"
-            # Create the directory if it doesn't exist
-            mkdir -p "$(dirname "$config_file")"
-            # Add or update the quick_exec setting
-            if grep -q "^\s*quick_exec=" "$config_file" 2>/dev/null; then
-                echo ...Update existing setting...
-                sed -i 's/^\s*quick_exec=.*/quick_exec=1/' "$config_file"
-            else
-                echo ...Adding the config file, it does not exist yet
-                echo -e "[config]\nquick_exec=1" >> "$config_file"
-            fi
-        
             # wallpaper
             echo $XDG_RUNTIME_DIR
             echo ==========================
@@ -403,12 +390,12 @@ while true; do
 
             echo "Desktop updated."
             break
-	    ;;
+        ;;
 
         [Nn]* ) 
             echo Skipped. You can do it later by re-running this install script.
             break
-	    ;;
+        ;;
         * ) echo "Please answer Y or N.";;
     esac
 done
