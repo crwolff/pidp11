@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=pidp11control
+Name=PDP-11 Control
 Comment=Start up PiDP-11
 Exec=/usr/bin/x-terminal-emulator -e "/opt/pidp11/bin/pdp11control.sh"
 Terminal=false

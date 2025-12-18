@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=pidp11-startup
+Name=PDP-11 Startup
 Comment=Start up PiDP-11
 Exec=bash pdp11control start
 Terminal=false
