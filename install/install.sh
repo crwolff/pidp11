@@ -479,8 +479,7 @@ while true; do
             cd /opt/pidp11
             wget -O /opt/pidp11/systems.tar.gz http://pidp.net/pidp11/systems24.tar.gz
             echo "Decompressing... (might take a while)"
-            gzip -d systems.tar.gz
-            tar -xvf systems.tar
+            tar -xzvf systems.tar.gz
             break
 	    ;;
         [Nn]* ) 
