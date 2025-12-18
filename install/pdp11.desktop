@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=pdp11
 Comment=Control PiDP-11
-Exec=/usr/bin/x-terminal-emulator -e "/opt/pidp11/bin/pdp11.sh"
+Exec=/usr/bin/x-terminal-emulator -e "/opt/pidp11/etc/pdp11.sh"
 Terminal=false
 Type=Application
+Icon=utilities-terminal
 Categories=X-PDP11;
 StartupNotify=true
