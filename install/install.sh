@@ -95,7 +95,7 @@ while true; do
         [Yy]* ) 
             sudo apt update
             #Install SDL2, optionally used for PDP-11 graphics terminal emulation
-            sudo apt install -y libsdl2-dev
+            sudo apt install -y libsdl2-dev libsdl2-mixer-2.0-0
             #Install pcap, optionally used when PDP-11 networking is enabled
             sudo apt install -y libpcap-dev
             #Install readline, used for command-line editing in simh
