@@ -255,7 +255,6 @@ while true; do
             sudo ln -f -s /opt/pidp11/bin/pdp11control.sh /usr/local/bin/pdp11control
 
             if [ "$ARCH" = "amd64" ]; then
-                echo skipping autostart and rpcbind, because this is not a Raspberry Pi
                 echo Not a problem: start manually by typing 
                 echo pdp11control start x
                 echo ...where x is the OS number normally set on the front panel.
@@ -272,36 +271,6 @@ while true; do
                 sudo systemctl start rpcbind
                 #echo please check that rpcbind is up:
                 #sudo systemctl status rpcbind
-                echo
-                echo
-                echo "Autostart the PDP-11 using the GUI(Y) or .profile (H)?"
-                    read -p "-- Y recommended, H is for headless Pis without GUI:" yhn
-                case $yhn in
-                      [Yy]* ) 
-                        mkdir -p ~/.config/autostart
-                        cp /opt/pidp11/install/pdp11startup.desktop ~/.config/autostart
-			echo
-			echo Autostart via .desktop file for GUI setup
-                        break
-			;;
-                      [NnHh]* ) 
-                        # add pdp11 to the end of pi's .profile to let a new login 
-                        # grab the terminal automatically
-                        #   first, make backup .foo copy...
-                        test ! -f $HOME/profile.foo && cp -p $HOME/.profile $HOME/profile.foo
-                        #   add the line to .profile if not there yet
-                        if grep -xq "pdp11 # autostart" $HOME/.profile
-                        then
-                            echo .profile already contains pdp11 for autostart, OK.
-                        else
-                            sed -e "\$apdp11 # autostart" -i $HOME/.profile
-                        fi
-			echo
-			echo autostart via .profile for headless use without GUI
-                        break
-			;;
-                      * ) echo "Please answer Y or N.";;
-                    esac
             fi
             break
 	    ;;
@@ -314,11 +283,13 @@ while true; do
 done
 
 
-# Install the pidp11 software
+# Configure autostart options
 # =============================================================================
 while true; do
     echo
-    read -p "Autostart PiDP-11 at boot using systemd? " yn
+    echo
+    echo "Autostart the PDP-11 using Systemd (Y), the GUI(G) or .profile (H)?"
+    read -p "-- Y recommended, H is for headless Pis without GUI:" yn
     case $yn in
         [Yy]* )
             myusername=$(whoami)
@@ -343,13 +314,39 @@ WantedBy=multi-user.target
 __EOF__
             sudo systemctl daemon-reload
             sudo systemctl enable pdp11startup.service
+            echo
+            echo Autostart via systemd .service file
             break
         ;;
-        [Nn]* )
-            echo Skipped systemd service install
+        [Gg]* )
+            mkdir -p ~/.config/autostart
+            cp /opt/pidp11/install/pdp11startup.desktop ~/.config/autostart/
+            echo
+            echo Autostart via .desktop file for GUI setup
             break
-	    ;;
-        * ) echo "Please answer Y or N.";;
+            ;;
+        [Hh]* )
+            # add pdp11 to the end of pi's .profile to let a new login
+            # grab the terminal automatically
+            #   first, make backup .foo copy...
+            test ! -f $HOME/profile.foo && cp -p $HOME/.profile $HOME/profile.foo
+            #   add the line to .profile if not there yet
+            if grep -xq "pdp11 # autostart" $HOME/.profile
+            then
+                echo .profile already contains pdp11 for autostart, OK.
+            else
+                echo
+                echo Autostart via .profile for headless use without GUI
+                sed -e "\$apdp11 # autostart" -i $HOME/.profile
+            fi
+            break
+            ;;
+        [Nn]* )
+            echo Skipped automatic startup
+            break
+            ;;
+        * ) echo "Please answer Y, N, G or H."
+            ;;
     esac
 done
 
