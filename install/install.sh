@@ -343,6 +343,7 @@ WantedBy=multi-user.target
 __EOF__
             sudo systemctl daemon-reload
             sudo systemctl enable pdp11startup.service
+            break
         ;;
         [Nn]* )
             echo Skipped systemd service install
