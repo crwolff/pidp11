@@ -314,6 +314,45 @@ while true; do
 done
 
 
+# Install the pidp11 software
+# =============================================================================
+while true; do
+    echo
+    read -p "Autostart PiDP-11 at boot using systemd? " yn
+    case $yn in
+        [Yy]* )
+            myusername=$(whoami)
+            mygroup=$(id -g -n)
+            sudo tee /etc/systemd/system/pdp11startup.service > /dev/null << __EOF__
+[Unit]
+Description=PiDP-11 Startup Service
+ConditionPathExists=/opt/pidp11/bin/pdp11control.sh
+After=network.target
+
+[Service]
+Type=forking
+User=$myusername
+Group=$mygroup
+
+WorkingDirectory=/opt/pidp11
+ExecStart=/opt/pidp11/bin/pdp11control.sh start
+ExecStop=/opt/pidp11/bin/pdp11control.sh stop
+
+[Install]
+WantedBy=multi-user.target
+__EOF__
+            sudo systemctl daemon-reload
+            sudo systemctl enable pdp11startup.service
+        ;;
+        [Nn]* )
+            echo Skipped systemd service install
+            break
+	    ;;
+        * ) echo "Please answer Y or N.";;
+    esac
+done
+
+
 # 20231218 - install all operating systems, if desired
 # =============================================================================
 while true; do
