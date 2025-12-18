@@ -398,9 +398,8 @@ while true; do
             echo "Installing Teletype font..."
             echo
             mkdir ~/.fonts
-                cp /opt/pidp11/install/TTY33MAlc-Book.ttf ~/.fonts/
-            fc-cache -v -f
-
+            cp /opt/pidp11/install/TTY33MAlc-Book.ttf ~/.fonts/
+            fc-cache -f
 
             echo "Desktop updated."
             break
@@ -415,6 +414,82 @@ while true; do
 done
 echo
 
+
+# Create PiDP11 Menu items
+# =============================================================================
+while true; do
+    echo
+    read -p "Add PiDP11 Menu? " yn
+    case $yn in
+        [Yy]* )
+            mkdir -p $HOME/.config/menus/applications-merged
+            cat << __EOF__ > $HOME/.config/menus/applications-merged/PiDP11.menu
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Menu>
+    <Name>Applications</Name>
+    <Menu>
+        <Directory>pidp11.directory</Directory>
+        <Name>PiDP11</Name>
+        <Include>
+            <Filename>pdp11.desktop</Filename>
+        </Include>
+        <Include>
+            <Filename>tek.desktop</Filename>
+        </Include>
+        <Include>
+            <Filename>tty.desktop</Filename>
+        </Include>
+        <Include>
+            <Filename>vt52.desktop</Filename>
+        </Include>
+        <Include>
+            <Filename>vt52fullscreen.desktop</Filename>
+        </Include>
+        <Include>
+            <Filename>pdp11control.desktop</Filename>
+        </Include>
+    </Menu>
+</Menu>
+__EOF__
+            #
+            mkdir -p $HOME/.local/share/desktop-directories
+            cat << __EOF__ > $HOME/.local/share/desktop-directories/pidp11.directory
+[Desktop Entry]
+Encoding=UTF-8
+Type=Directory
+Name=PiDP11
+Icon=/opt/pidp11/install/pdp11control.svg
+Comment=PiDP-11 Tools
+__EOF__
+            #
+            mkdir -p $HOME/.local/share/applications
+            for i in pdp11.desktop pdp11control.desktop tek.desktop tty.desktop vt52.desktop vt52fullscreen.desktop ; do
+                cp /opt/pidp11/install/"$i" $HOME/.local/share/applications/
+            done
+
+            # wallpaper
+            echo $XDG_RUNTIME_DIR
+            echo ==========================
+            pcmanfm --set-wallpaper /opt/pidp11/install/wallpaper.jpeg --wallpaper-mode=fit
+
+            echo
+            echo "Installing Teletype font..."
+            echo
+            mkdir ~/.fonts
+            cp /opt/pidp11/install/TTY33MAlc-Book.ttf ~/.fonts/
+            fc-cache -f
+
+            echo "Menu added."
+            break
+        ;;
+        [Nn]* )
+            echo Skipped. You can do it later by re-running this install script.
+            break
+        ;;
+        * ) echo "Please answer Y or N.";;
+    esac
+done
+echo
 
 
 # 20241126 Add Chase Covello's updated 2.11BSD straight from his github
