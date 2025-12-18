@@ -351,29 +351,6 @@ __EOF__
 done
 
 
-# 20231218 - install all operating systems, if desired
-# =============================================================================
-while true; do
-    echo
-    read -p "Download and install the PDP-11 operating systems? " prxn
-    case $prxn in
-        [Yy]* ) 
-            cd /opt/pidp11
-            wget -O /opt/pidp11/systems.tar.gz http://pidp.net/pidp11/systems24.tar.gz
-            echo "Decompressing... (might take a while)"
-            gzip -d systems.tar.gz
-            tar -xvf systems.tar
-            break
-	    ;;
-        [Nn]* ) 
-            echo PDP-11 operating systems not added at your request. You can do it later.
-            break
-	    ;;
-        * ) echo "Please answer Y or N.";;
-    esac
-done
-
-
 # 20241126 Add VT52 desktop icon
 # =============================================================================
 while true; do
@@ -490,6 +467,29 @@ __EOF__
     esac
 done
 echo
+
+
+# 20231218 - install all operating systems, if desired
+# =============================================================================
+while true; do
+    echo
+    read -p "Download and install the PDP-11 operating systems? " prxn
+    case $prxn in
+        [Yy]* ) 
+            cd /opt/pidp11
+            wget -O /opt/pidp11/systems.tar.gz http://pidp.net/pidp11/systems24.tar.gz
+            echo "Decompressing... (might take a while)"
+            gzip -d systems.tar.gz
+            tar -xvf systems.tar
+            break
+	    ;;
+        [Nn]* ) 
+            echo PDP-11 operating systems not added at your request. You can do it later.
+            break
+	    ;;
+        * ) echo "Please answer Y or N.";;
+    esac
+done
 
 
 # 20241126 Add Chase Covello's updated 2.11BSD straight from his github
