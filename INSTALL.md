@@ -81,6 +81,13 @@ sudo systemctl daemon-reload
 sudo systemctl enable xvnc1.socket
 ```
 
+### Optional
+
+Disable automatic updates.
+```
+sudo systemctl disable packagekit
+```
+
 ### Test VNC
 
 ```
