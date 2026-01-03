@@ -100,11 +100,12 @@ sudo git clone https://github.com/crwolff/pidp11.git
 /opt/pidp11/install/install.sh
 ```
 
-## Set startup options
+## Customizations
 
 ```
 cp /opt/pidp11/install/pidp11-useroptions.rc /opt/pidp11/pidp11-useroptions.rc
 sed -i -e 's/[# ]*export.*PIDP_11_ROTATION=.*/export PIDP_11_ROTATION="FLIP"/' /opt/pidp11/pidp11-useroptions.rc
+sed -i -e 's/eth0/wlan0/i' /opt/pidp11/systems/*/*.ini
 ```
 
 ## Reboot
