@@ -85,7 +85,7 @@ sudo systemctl enable xvnc1.socket
 
 Disable automatic updates.
 ```
-sudo systemctl disable packagekit
+sudo systemctl mask packagekit
 ```
 
 ### Test VNC
