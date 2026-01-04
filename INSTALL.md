@@ -83,9 +83,10 @@ sudo systemctl enable xvnc1.socket
 
 ### Optional
 
-Disable automatic updates.
+Disable GUI package installer(s) and auto-update
 ```
-sudo systemctl mask packagekit
+sudo apt remove --purge packagekit -y
+sudo apt autoremove --purge -y
 ```
 
 ### Test VNC
